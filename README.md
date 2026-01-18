@@ -1,24 +1,139 @@
-# README
+# Instagram風SNSアプリケーション
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+フリーランスエンジニアのポートフォリオプロジェクトとして開発中のInstagram風SNSアプリケーションです。
 
-Things you may want to cover:
+## 🎯 プロジェクト概要
 
-* Ruby version
+このプロジェクトは、React + AWS技術スタックを活用したポートフォリオの一環として、実務レベルのWebアプリケーション開発を実践するものです。
 
-* System dependencies
+## 🛠️ 技術スタック
 
-* Configuration
+### バックエンド
+- **Ruby on Rails 7.2**
+- **PostgreSQL** - データベース
+- **Devise** - ユーザー認証
+- **Active Storage** - ファイルアップロード管理
 
-* Database creation
+### フロントエンド
+- **Stimulus.js** - JavaScriptフレームワーク
+- **Importmap** - モジュール管理
 
-* Database initialization
+### インフラ(実装予定)
+- **AWS ECS Fargate** - コンテナオーケストレーション
+- **AWS RDS** - マネージドデータベース
+- **AWS CloudFront** - CDN
+- **AWS ALB** - ロードバランサー
+- **Terraform** - Infrastructure as Code
 
-* How to run the test suite
+## ✅ 実装済み機能
 
-* Services (job queues, cache servers, search engines, etc.)
+- [x] ユーザー認証機能
+  - サインアップ / ログイン / ログアウト
+  - パスワードリセット
+  - ユーザー名(一意制約あり)
+- [x] ユーザープロフィール
+  - プロフィール画像のアップロード
+  - デフォルト画像の表示
+  - 画像プレビュー機能(JavaScript)
+  - プロフィール編集
 
-* Deployment instructions
+## 🚀 実装予定機能
 
-* ...
+- [ ] **画像投稿機能**
+  - 複数画像のアップロード
+  - キャプション入力
+- [ ] **タイムライン**
+  - フォローユーザーの投稿表示
+  - ページネーション
+- [ ] **いいね機能**
+  - 投稿へのいいね
+  - いいね数の表示
+- [ ] **コメント機能**
+  - 投稿へのコメント
+  - コメント一覧表示
+- [ ] **メール送信**
+  - ウェルカムメール
+  - 通知メール
+- [ ] **フォロー機能**
+  - ユーザーのフォロー/アンフォロー
+  - フォロワー/フォロー中一覧
+- [ ] **テスト**
+  - RSpecによる単体テスト
+  - システムテスト
+
+## 💻 セットアップ手順
+
+### 必要な環境
+- Ruby 3.3.2
+- Rails 7.2.3
+- PostgreSQL 14+
+- Node.js 18+
+
+### インストール
+```bash
+# リポジトリをクローン
+git clone https://github.com/tk53582005/instagram-app.git
+cd instagram-app
+
+# 依存関係をインストール
+bundle install
+
+# データベースのセットアップ
+rails db:create
+rails db:migrate
+
+# サーバーを起動
+rails server
+```
+
+ブラウザで http://localhost:3000 にアクセス
+
+## 🎨 デザイン
+
+Instagram風のUIデザインを実装:
+- モダンで直感的なインターフェース
+- レスポンシブデザイン対応予定
+- シンプルで洗練されたUI
+
+## 🔐 セキュリティ
+
+- Deviseによる認証
+- Strong Parametersによるパラメータ検証
+- CSRF保護
+- 環境変数による機密情報の管理
+
+## 📝 開発方針
+
+このプロジェクトは以下を重視して開発しています:
+
+1. **実務レベルのコード品質**
+   - 可読性の高いコード
+   - DRY原則の遵守
+   - 適切なエラーハンドリング
+
+2. **本番環境を意識した設計**
+   - スケーラブルなアーキテクチャ
+   - AWS環境へのデプロイを前提
+
+3. **継続的な学習と改善**
+   - 最新技術の導入
+   - ベストプラクティスの実践
+
+## 👤 作成者
+
+**Kazuhiro**
+- GitHub: [@tk53582005](https://github.com/tk53582005)
+- 目標: フリーランスAWSエンジニアとしてのキャリア構築
+
+## 📅 開発ロードマップ
+
+- **Phase 1** (現在): 基本機能の実装 ✅
+- **Phase 2**: 画像投稿とタイムライン機能
+- **Phase 3**: ソーシャル機能(いいね、コメント、フォロー)
+- **Phase 4**: AWSへのデプロイ準備
+- **Phase 5**: Terraformによるインフラコード化
+- **Phase 6**: CI/CDパイプライン構築
+
+---
+
+⭐ このプロジェクトが参考になった場合は、スターをつけていただけると嬉しいです!
