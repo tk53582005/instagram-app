@@ -7,6 +7,13 @@ class User < ApplicationRecord
   # プロフィール画像の関連付け
   has_one_attached :profile_image
 
+  # 投稿との関連付け
+  has_many :posts, dependent: :destroy
+
+  # いいねの関連付け
+  has_many :likes, dependent: :destroy
+  has_many :liked_posts, through: :likes, source: :post
+
   # バリデーション
   validates :username, 
             presence: true, 

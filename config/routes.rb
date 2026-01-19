@@ -1,13 +1,18 @@
 Rails.application.routes.draw do
   devise_for :users
   
-  # ログイン後はプロフィールページへ
+  # ログイン後はタイムラインへ
   authenticated :user do
-    root to: redirect { |_params, request| "/profile/#{request.env['warden'].user.username}" }, as: :authenticated_root
+    root to: 'posts#index', as: :authenticated_root
   end
   
   # 未ログインはログインページへ
   root to: redirect('/users/sign_in')
+  
+  # 投稿機能
+  resources :posts, only: [:index, :new, :create, :show, :destroy] do
+    resource :like, only: [:create, :destroy]
+  end
   
   # プロフィールページ
   get '/profile/:username', to: 'profiles#show', as: :profile

@@ -1,0 +1,10 @@
+<% if post.liked_by?(current_user) %>
+  <%= button_to post_like_path(post), method: :delete, remote: true, style: "background: none; border: none; cursor: pointer; padding: 0; font-size: 24px;" do %>
+    ❤️
+  <% end %>
+<% else %>
+  <%= button_to post_like_path(post), method: :post, remote: true, style: "background: none; border: none; cursor: pointer; padding: 0; font-size: 24px;" do %>
+    ♡
+  <% end %>
+<% end %>
+<span style="margin-left: 8px; font-weight: 600; font-size: 14px;"><%= post.likes.count %></span>
