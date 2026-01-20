@@ -1,0 +1,8 @@
+// コメントを削除
+document.getElementById('comment-<%= @comment.id %>').remove();
+
+// コメント数を更新
+const commentCount = document.querySelector('#like-button-<%= @post.id %> span:nth-child(2)');
+if (commentCount) {
+  commentCount.innerHTML = '💬 <%= @post.comments.count %>';
+}

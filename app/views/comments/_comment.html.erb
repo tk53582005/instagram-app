@@ -1,0 +1,27 @@
+<div id="comment-<%= comment.id %>" style="padding: 12px 16px; border-bottom: 1px solid #f0f0f0;">
+  <div style="display: flex; gap: 12px;">
+    <%= link_to profile_path(comment.user.username) do %>
+      <%= image_tag comment.user.profile_image_url,
+                    style: "width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" %>
+    <% end %>
+    
+    <div style="flex: 1;">
+      <div style="margin-bottom: 4px;">
+        <%= link_to comment.user.username, profile_path(comment.user.username),
+                    style: "font-weight: 600; font-size: 14px; color: #262626; text-decoration: none; margin-right: 8px;" %>
+        <span style="font-size: 14px; color: #262626;"><%= comment.content %></span>
+      </div>
+      
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <span style="font-size: 12px; color: #8e8e8e;"><%= time_ago_in_words(comment.created_at) %>前</span>
+        
+        <% if comment.user == current_user %>
+          <%= link_to "削除", post_comment_path(comment.post, comment),
+                      data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
+                      remote: true,
+                      style: "font-size: 12px; color: #ed4956; text-decoration: none; font-weight: 600;" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
