@@ -1,0 +1,45 @@
+<div style="max-width: 600px; margin: 0 auto; padding: 30px 20px;">
+  <div style="background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 30px;">
+    <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #dbdbdb;">
+      <%= @user.username %> のフォロワー
+    </h2>
+    
+    <% if @users.any? %>
+      <div>
+        <% @users.each do |user| %>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #efefef;">
+            <!-- ユーザー情報 -->
+            <%= link_to profile_path(user.username), 
+                        style: "display: flex; align-items: center; text-decoration: none; color: #262626; flex: 1;" do %>
+              <%= image_tag user.profile_image_url, 
+                            style: "width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-right: 15px;",
+                            alt: "#{user.username}のプロフィール画像" %>
+              <div>
+                <div style="font-weight: 600; font-size: 14px;"><%= user.username %></div>
+                <% if user.name.present? %>
+                  <div style="color: #8e8e8e; font-size: 14px;"><%= user.name %></div>
+                <% end %>
+              </div>
+            <% end %>
+            
+            <!-- フォローボタン -->
+            <% if current_user != user %>
+              <div id="follow-button-<%= user.id %>">
+                <%= render 'follows/follow_button', user: user %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div style="text-align: center; padding: 40px 0; color: #8e8e8e;">
+        <p>フォロワーはいません</p>
+      </div>
+    <% end %>
+    
+    <div style="margin-top: 30px; text-align: center;">
+      <%= link_to "プロフィールに戻る", profile_path(@user.username), 
+                  style: "color: #0095f6; text-decoration: none; font-weight: 600;" %>
+    </div>
+  </div>
+</div>

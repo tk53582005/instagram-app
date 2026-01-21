@@ -17,6 +17,23 @@ class User < ApplicationRecord
   # コメントの関連付け
   has_many :comments, dependent: :destroy
 
+  # === フォロー機能 ===
+  # 自分がフォローしている関係（能動的フォロー）
+  has_many :active_follows, class_name: 'Follow', 
+           foreign_key: 'follower_id', 
+           dependent: :destroy
+  
+  # 自分がフォローされている関係（受動的フォロー）
+  has_many :passive_follows, class_name: 'Follow', 
+           foreign_key: 'following_id', 
+           dependent: :destroy
+  
+  # フォローしているユーザー一覧
+  has_many :followings, through: :active_follows, source: :following
+  
+  # フォロワー一覧
+  has_many :followers, through: :passive_follows, source: :follower
+
   # バリデーション
   validates :username,
             presence: true,
@@ -36,5 +53,19 @@ class User < ApplicationRecord
     else
       "/assets/default_profile.png"
     end
+  end
+
+  # === フォロー関連のヘルパーメソッド ===
+  def follow(other_user)
+    return if self == other_user
+    active_follows.create(following_id: other_user.id)
+  end
+  
+  def unfollow(other_user)
+    active_follows.find_by(following_id: other_user.id)&.destroy
+  end
+  
+  def following?(other_user)
+    followings.include?(other_user)
   end
 end

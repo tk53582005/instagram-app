@@ -3,7 +3,30 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show, :destroy]
 
   def index
-    @posts = Post.includes(:user).recent
+    # フォローしているユーザーのIDを取得
+    following_ids = current_user.followings.pluck(:id)
+    
+    if following_ids.any?
+      # フォローしているユーザーの投稿
+      following_posts = Post.where(user_id: following_ids)
+      
+      # 24時間以内の人気投稿（いいね数上位5件）
+      trending_posts = Post.where('posts.created_at >= ?', 24.hours.ago)
+                          .left_joins(:likes)
+                          .group('posts.id')
+                          .order('COUNT(likes.id) DESC')
+                          .limit(5)
+      
+      # 重複を除いて結合し、作成日時でソート
+      post_ids = (following_posts.pluck(:id) + trending_posts.pluck(:id)).uniq
+      @posts = Post.where(id: post_ids)
+                   .includes(:user, :images_attachments, :likes, :comments)
+                   .order(created_at: :desc)
+    else
+      # フォローしているユーザーがいない場合は全投稿を表示
+      @posts = Post.includes(:user, :images_attachments, :likes, :comments)
+                   .order(created_at: :desc)
+    end
   end
 
   def new

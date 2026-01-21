@@ -1,0 +1,9 @@
+// フォローボタンを更新
+document.getElementById('follow-button-<%= @user.id %>').innerHTML = 
+  '<%= j render "follows/follow_button", user: @user %>';
+
+// フォロワー数を更新
+const followersCount = document.getElementById('followers-count-<%= @user.id %>');
+if (followersCount) {
+  followersCount.textContent = '<%= @user.followers.count %>';
+}

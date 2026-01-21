@@ -20,11 +20,16 @@ Rails.application.routes.draw do
   get "/profile/:username", to: "profiles#show", as: :profile
   get "/profile/:username/edit", to: "profiles#edit", as: :edit_profile
   patch "/profile/:username", to: "profiles#update"
+  
+  # フォロー機能（追加）
+  get "/profile/:username/followings", to: "profiles#followings", as: :profile_followings
+  get "/profile/:username/followers", to: "profiles#followers", as: :profile_followers
+  resources :follows, only: [:create, :destroy]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Can be used by load balancers and uptime monitors to verify that app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Render dynamic PWA files from app/views/pwa/*

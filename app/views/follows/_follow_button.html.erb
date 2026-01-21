@@ -1,0 +1,15 @@
+<% if current_user.following?(user) %>
+  <% follow = current_user.active_follows.find_by(following_id: user.id) %>
+  <%= button_to 'フォロー中', follow_path(follow), 
+      method: :delete, 
+      remote: true,
+      class: 'btn btn-secondary btn-sm',
+      form: { id: "unfollow-form-#{user.id}" } %>
+<% else %>
+  <%= button_to 'フォローする', follows_path, 
+      method: :post, 
+      remote: true,
+      params: { following_id: user.id },
+      class: 'btn btn-primary btn-sm',
+      form: { id: "follow-form-#{user.id}" } %>
+<% end %>
