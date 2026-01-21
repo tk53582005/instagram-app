@@ -16,6 +16,12 @@
 - **Sidekiq** - バックグラウンドジョブ処理
 - **Redis** - ジョブキュー
 
+### テスト
+- **RSpec** - テストフレームワーク
+- **FactoryBot** - テストデータ作成
+- **Capybara** - E2Eテスト
+- **Shoulda Matchers** - バリデーションテスト
+
 ### フロントエンド
 - **Stimulus.js** - JavaScriptフレームワーク
 - **Importmap** - モジュール管理
@@ -64,15 +70,18 @@
   - ユーザーのフォロー/アンフォロー（Ajax対応）
   - フォロワー/フォロー中一覧
   - プロフィールページでの統計表示（投稿数、フォロワー数、フォロー中数）
+- [x] **テスト**
+  - RSpecによる包括的なテストスイート（77テストケース）
+  - Model Spec: バリデーション、関連付け、ビジネスロジック
+  - Request Spec: コントローラーの動作確認
+  - System Spec: E2Eテスト
 
 ## 🚀 実装予定機能
 
-- [ ] **テスト**
-  - RSpecによる単体テスト
-  - システムテスト
 - [ ] **AWSデプロイ**
   - ECS Fargate環境構築
   - RDS/CloudFront/ALB設定
+  - Terraformによるインフラコード化
 
 ## 💻 セットアップ手順
 
@@ -108,6 +117,17 @@ rails server
 
 ブラウザで http://localhost:3000 にアクセス
 
+### テストの実行
+```bash
+# 全テストを実行
+bundle exec rspec
+
+# 特定のテストを実行
+bundle exec rspec spec/models
+bundle exec rspec spec/requests
+bundle exec rspec spec/system
+```
+
 ## 🎨 デザイン
 
 Instagram風のUIデザインを実装:
@@ -130,6 +150,7 @@ Instagram風のUIデザインを実装:
    - 可読性の高いコード
    - DRY原則の遵守
    - 適切なエラーハンドリング
+   - 包括的なテストカバレッジ
 
 2. **本番環境を意識した設計**
    - スケーラブルなアーキテクチャ
@@ -155,9 +176,12 @@ Instagram風のUIデザインを実装:
   - コメント機能、メンション、非同期メール送信
 - **Phase 4** (完了): フォロー機能 ✅
   - フォロー/アンフォロー、一覧表示、タイムライン改善
-- **Phase 5**: テスト実装
-  - RSpecによる単体テスト・システムテスト
+- **Phase 5** (完了): テスト実装 ✅
+  - RSpecによる包括的なテストスイート（77テストケース）
+  - Model、Request、System Specの実装
 - **Phase 6**: AWSへのデプロイ準備
+  - Dockerコンテナ化の最適化
+  - ECS Fargate環境構築
 - **Phase 7**: Terraformによるインフラコード化
 - **Phase 8**: CI/CDパイプライン構築
 
