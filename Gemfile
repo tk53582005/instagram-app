@@ -79,6 +79,9 @@ gem "devise"
 # 画像処理
 gem "image_processing", "~> 1.2"
 
+# AWS S3（本番環境用）
+gem "aws-sdk-s3", require: false
+
 # 非同期ジョブ処理
 gem "sidekiq"
 gem "redis"
