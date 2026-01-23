@@ -43,30 +43,9 @@ resource "aws_subnet" "private" {
   }
 }
 
-# NAT Gateway用のElastic IP
-resource "aws_eip" "nat" {
-  count  = 2
-  domain = "vpc"
-
-  tags = {
-    Name = "${var.project_name}-nat-eip-${count.index + 1}"
-  }
-
-  depends_on = [aws_internet_gateway.main]
-}
-
-# NAT Gateway（コスト削減のため1つのみ作成も可能）
-resource "aws_nat_gateway" "main" {
-  count         = 2
-  allocation_id = aws_eip.nat[count.index].id
-  subnet_id     = aws_subnet.public[count.index].id
-
-  tags = {
-    Name = "${var.project_name}-nat-${count.index + 1}"
-  }
-
-  depends_on = [aws_internet_gateway.main]
-}
+# NAT Gateway関連を削除（コスト削減）
+# resource "aws_eip" "nat" { ... }
+# resource "aws_nat_gateway" "main" { ... }
 
 # Public Route Table
 resource "aws_route_table" "public" {
@@ -89,14 +68,14 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-# Private Route Tables
+# Private Route Tables（Internet Gateway経由に変更）
 resource "aws_route_table" "private" {
   count  = 2
   vpc_id = aws_vpc.main.id
 
   route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.main[count.index].id
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
   }
 
   tags = {

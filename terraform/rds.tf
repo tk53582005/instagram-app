@@ -28,7 +28,7 @@ resource "aws_db_instance" "main" {
   identifier     = "${var.project_name}-db"
   engine         = "postgres"
   engine_version = "16.3"
-  instance_class = var.db_instance_class
+  instance_class = "db.t3.micro"
 
   allocated_storage     = 20
   max_allocated_storage = 100
@@ -52,9 +52,8 @@ resource "aws_db_instance" "main" {
 
   enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
 
-  # 無料枠を使う場合はコメントアウト解除
-  # publicly_accessible = false
-  # multi_az            = false
+  publicly_accessible = false
+  multi_az            = false
 
   tags = {
     Name = "${var.project_name}-db"

@@ -28,7 +28,7 @@ variable "vpc_cidr" {
 variable "db_instance_class" {
   description = "RDS instance class"
   type        = string
-  default     = "db.t4g.micro"
+  default     = "db.t3.micro"
 }
 
 variable "db_name" {
@@ -60,13 +60,13 @@ variable "redis_node_type" {
 variable "ecs_task_cpu" {
   description = "ECS task CPU units"
   type        = string
-  default     = "256" # 0.25 vCPU
+  default     = "256"
 }
 
 variable "ecs_task_memory" {
   description = "ECS task memory in MB"
   type        = string
-  default     = "512" # 0.5 GB
+  default     = "512"
 }
 
 variable "app_image" {
