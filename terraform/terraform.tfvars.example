@@ -1,0 +1,18 @@
+# AWS設定
+aws_region  = "ap-northeast-1"
+environment = "production"
+
+# プロジェクト設定
+project_name = "instagram-app"
+
+# RDS設定
+db_password = "Instagram2026!SecurePass"
+
+# Rails設定
+rails_master_key = "89c2fb8299f9e07fff6c3173bb7fa75e"
+
+# Docker Image (後でECRのURLに置き換える)
+app_image = "dummy:latest"
+
+# S3バケット名（グローバルで一意である必要がある）
+s3_bucket_name = "instagram-app-storage-tk53582005"
