@@ -46,3 +46,15 @@
 # Ignore Docker-related files
 /.dockerignore
 /Dockerfile*
+
+# Terraform (huge + not needed in image)
+**/.terraform
+**/.terraform.lock.hcl
+**/*.tfstate
+**/*.tfstate.*
+**/crash.log
+**/crash.*.log
+terraform/
+
+# macOS
+.DS_Store

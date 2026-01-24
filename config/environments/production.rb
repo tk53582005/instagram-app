@@ -68,7 +68,21 @@ Rails.application.configure do
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
   # Use Redis for caching in production
-  config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
+  # Cache store configuration
+  cache_store = ENV.fetch("RAILS_CACHE_STORE", "redis")
+  
+  if cache_store == "null_store"
+    config.cache_store = :null_store
+  else
+    config.cache_store = :redis_cache_store, {
+      url: ENV.fetch("REDIS_URL", "redis://localhost:6379/0"),
+      connect_timeout: 5,
+      read_timeout: 1,
+      write_timeout: 1,
+      reconnect_attempts: 1,
+      pool: { size: Integer(ENV.fetch("RAILS_MAX_THREADS", 5)), timeout: 5 }
+    }
+  end
 
   # Use Sidekiq for Active Job
   config.active_job.queue_adapter = :sidekiq

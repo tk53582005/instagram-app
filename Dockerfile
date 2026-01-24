@@ -1,10 +1,6 @@
 # syntax = docker/dockerfile:1
-
 # This Dockerfile is designed for production on AWS ECS Fargate
-# docker build -t instagram-app .
-# docker run -d -p 3000:3000 --name instagram-app -e RAILS_MASTER_KEY=<value> instagram-app
 
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.3.2
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
@@ -39,11 +35,21 @@ RUN bundle install && \
 # Copy application code
 COPY . .
 
+# DEBUG: Check actual files in container
+RUN echo "---- /rails/config/environment.rb ----" \
+ && nl -ba /rails/config/environment.rb | sed -n '1,40p' \
+ && echo "---- /rails/config/application.rb ----" \
+ && nl -ba /rails/config/application.rb | sed -n '1,120p' \
+ && echo "---- grep initialize! ----" \
+ && (grep -RIn "initialize!\s*(" /rails/config /rails/bin /rails/lib || true) \
+ && echo "---- grep Rails.application.initialize ----" \
+ && (grep -RIn "Rails\.application\.initialize" /rails/config /rails/bin /rails/lib || true)
+
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+RUN RAILS_ENV=production SECRET_KEY_BASE=dummy RAILS_CACHE_STORE=null_store ./bin/rails assets:precompile
 
 # Final stage for app image
 FROM base
