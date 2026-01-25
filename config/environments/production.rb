@@ -119,3 +119,13 @@ Rails.application.configure do
     key: "_instagram_app_session", \
     secure: ENV["FORCE_SSL"].present?
 end
+
+  # URL generation configuration
+  config.action_mailer.default_url_options = { 
+    host: ENV.fetch("APP_HOST", "localhost"),
+    protocol: ENV["FORCE_SSL"].present? ? "https" : "http"
+  }
+  
+  Rails.application.routes.default_url_options = {
+    protocol: ENV["FORCE_SSL"].present? ? "https" : "http"
+  }
