@@ -27,7 +27,7 @@ resource "aws_db_parameter_group" "main" {
 resource "aws_db_instance" "main" {
   identifier     = "${var.project_name}-db"
   engine         = "postgres"
-  engine_version = "16.3"
+  engine_version = "16.6"
   instance_class = "db.t3.micro"
 
   allocated_storage     = 20
