@@ -54,7 +54,10 @@ resource "aws_ecs_task_definition" "web" {
         },
         {
           name  = "REDIS_URL"
-          value = "redis://${aws_elasticache_cluster.main.cache_nodes[0].address}:6379/0"
+        },
+        {
+          name  = "APP_HOST"
+          value = "instagram-app-alb-591862737.ap-northeast-1.elb.amazonaws.com"
         },
         {
           name  = "AWS_REGION"
@@ -118,7 +121,6 @@ resource "aws_ecs_service" "web" {
 
   depends_on = [
     aws_lb_listener.http,
-    aws_lb_listener.https
   ]
 
   tags = {
@@ -158,7 +160,10 @@ resource "aws_ecs_task_definition" "sidekiq" {
         },
         {
           name  = "REDIS_URL"
-          value = "redis://${aws_elasticache_cluster.main.cache_nodes[0].address}:6379/0"
+        },
+        {
+          name  = "APP_HOST"
+          value = "instagram-app-alb-591862737.ap-northeast-1.elb.amazonaws.com"
         },
         {
           name  = "AWS_REGION"

@@ -46,13 +46,13 @@ Rails.application.configure do
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
   # Can be used together with config.force_ssl for Strict-Transport-Security and secure cookies.
-  config.assume_ssl = true
+  force_ssl = ENV["FORCE_SSL"].present?
+  config.assume_ssl = force_ssl
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = ENV["FORCE_SSL"].present?
 
   # Skip http-to-https redirect for the default health check endpoint.
-  # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
+  config.ssl_options = force_ssl ? {} : { hsts: false }
 
   # Log to STDOUT by default
   config.logger = ActiveSupport::Logger.new(STDOUT)
@@ -95,8 +95,6 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
   
   # Action Mailer設定（本番環境用）
-  config.action_mailer.default_url_options = { host: ENV['APP_HOST'] || 'localhost' }
-
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
@@ -113,19 +111,21 @@ Rails.application.configure do
   # Enable DNS rebinding protection and other `Host` header attacks.
   # ALB経由のアクセスを許可
   config.hosts.clear
-
-  # Session store configuration
-  config.session_store :cookie_store, \
-    key: "_instagram_app_session", \
-    secure: ENV["FORCE_SSL"].present?
-end
-
-  # URL generation configuration
-  config.action_mailer.default_url_options = { 
-    host: ENV.fetch("APP_HOST", "localhost"),
-    protocol: ENV["FORCE_SSL"].present? ? "https" : "http"
-  }
   
-  Rails.application.routes.default_url_options = {
-    protocol: ENV["FORCE_SSL"].present? ? "https" : "http"
+  # Session store configuration
+  force_ssl = ENV["FORCE_SSL"].present?
+  config.session_store :cookie_store, 
+    key: "_instagram_app_session", 
+    secure: force_ssl
+  
+  # URL generation configuration
+  app_host = ENV.fetch("APP_HOST", "localhost")
+  config.action_mailer.default_url_options = { 
+    host: app_host,
+    protocol: force_ssl ? "https" : "http"
   }
+  config.action_controller.default_url_options = { 
+    host: app_host, 
+    protocol: force_ssl ? "https" : "http" 
+  }
+end
