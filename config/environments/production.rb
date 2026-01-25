@@ -113,4 +113,9 @@ Rails.application.configure do
   # Enable DNS rebinding protection and other `Host` header attacks.
   # ALB経由のアクセスを許可
   config.hosts.clear
+
+  # Session store configuration
+  config.session_store :cookie_store, \
+    key: "_instagram_app_session", \
+    secure: ENV["FORCE_SSL"].present?
 end
