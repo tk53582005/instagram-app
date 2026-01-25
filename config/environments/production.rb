@@ -67,7 +67,6 @@ Rails.application.configure do
   # want to log everything, set the level to "debug".
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
-  # Use Redis for caching in production
   # Cache store configuration
   cache_store = ENV.fetch("RAILS_CACHE_STORE", "redis")
   

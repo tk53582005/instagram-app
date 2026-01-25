@@ -35,20 +35,10 @@ RUN bundle install && \
 # Copy application code
 COPY . .
 
-# DEBUG: Check actual files in container
-RUN echo "---- /rails/config/environment.rb ----" \
- && nl -ba /rails/config/environment.rb | sed -n '1,40p' \
- && echo "---- /rails/config/application.rb ----" \
- && nl -ba /rails/config/application.rb | sed -n '1,120p' \
- && echo "---- grep initialize! ----" \
- && (grep -RIn "initialize!\s*(" /rails/config /rails/bin /rails/lib || true) \
- && echo "---- grep Rails.application.initialize ----" \
- && (grep -RIn "Rails\.application\.initialize" /rails/config /rails/bin /rails/lib || true)
-
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
+# Precompiling assets for production
 RUN RAILS_ENV=production SECRET_KEY_BASE=dummy RAILS_CACHE_STORE=null_store ./bin/rails assets:precompile
 
 # Final stage for app image
