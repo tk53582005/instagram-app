@@ -84,5 +84,5 @@ gem "aws-sdk-s3", require: false
 
 # 非同期ジョブ処理
 gem "sidekiq"
-gem "connection_pool", "~> 2.4"
+gem "connection_pool", "~> 3.0"
 gem "redis", ">= 4.0.1"
